@@ -19,6 +19,7 @@ fn sdf { ftpfs -a ftp@sdf.org sdf.org }
 fn gp { git/push $* }
 fn gs { git/walk $* }
 fn gc { git/commit $* }
+fn ga { git/add $* }
 
 # authentication
 cat $home/lib/ssh/key >/mnt/factotum/ctl

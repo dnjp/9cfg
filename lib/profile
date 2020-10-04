@@ -5,8 +5,10 @@ fn '..' { cd .. }
 fn h { cd $home }
 fn l { ls $* }
 
+fn sdf { ftpfs -a ftp@sdf.org sdf.org }
+
 font=/lib/font/bit/terminus/unicode.14.font
-editor=acme
+editor=E
 ip/ipconfig
 
 cat $home/lib/ssh/key >/mnt/factotum/ctl

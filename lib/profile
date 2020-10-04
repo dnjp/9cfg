@@ -16,6 +16,9 @@ fn '..' { cd .. }
 fn h { cd $home }
 fn l { ls $* }
 fn sdf { ftpfs -a ftp@sdf.org sdf.org }
+fn gp { git/push $* }
+fn gs { git/walk $* }
+fn gc { git/commit $* }
 
 # authentication
 cat $home/lib/ssh/key >/mnt/factotum/ctl

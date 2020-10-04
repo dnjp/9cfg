@@ -1,0 +1,5 @@
+#!/bin/rc
+
+# -r minx miny maxx maxy
+window 0,0,683,768 acme
+window 683,0,1024,768

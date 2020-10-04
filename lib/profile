@@ -25,6 +25,10 @@ ssh git@git.sr.ht
 # start services
 ip/ipconfig
 
+# mount contrib/sources
+9fs 9pio
+9fs 9contrib
+
 switch($service){
 case terminal
 	webcookies

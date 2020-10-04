@@ -1,19 +1,29 @@
+# environment variables
+font=/lib/font/bit/terminus/unicode.14.font
+editor=E
+
+# setup executables
 bind -qa $home/bin/rc /bin
 bind -qa $home/bin/$cputype /bin
 
+# bind to git config
+bind $home/lib/profile $home/src/config/lib/profile
+bind $home/lib/git $home/src/config/lib/git
+bind $home/bin/rc $home/src/config/bin/rc
+
+# aliases
 fn '..' { cd .. }
 fn h { cd $home }
 fn l { ls $* }
-
 fn sdf { ftpfs -a ftp@sdf.org sdf.org }
 
-font=/lib/font/bit/terminus/unicode.14.font
-editor=E
-ip/ipconfig
-
+# authentication
 cat $home/lib/ssh/key >/mnt/factotum/ctl
 ssh git@github.com
 ssh git@git.sr.ht
+
+# start services
+ip/ipconfig
 
 switch($service){
 case terminal
@@ -24,7 +34,10 @@ case terminal
 	echo -n 'res 3' > '#m/mousectl'
 	prompt=('; ' '	')
 	fn term%{ $* }
+	
+	# set keyboard map
 	cat /sys/lib/kbmap/colemak > /dev/kbmap
+
 	rio -s -i /usr/daniel/bin/rc/riostart
 case cpu
 	bind /mnt/term/dev/cons /dev/cons

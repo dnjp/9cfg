@@ -1,5 +1,5 @@
 # environment variables
-font=/lib/font/bit/terminus/unicode.14.font
+font=/lib/font/bit/lucidasans/unicode.7.font
 editor=E
 
 # setup executables
@@ -10,6 +10,10 @@ bind -qa $home/bin/$cputype /bin
 bind $home/lib/profile $home/src/config/lib/profile
 bind $home/lib/git $home/src/config/lib/git
 bind $home/bin/rc $home/src/config/bin/rc
+
+# go
+bind -a $home/go/bin /bin
+GO111MODULE=on
 
 # aliases
 fn '..' { cd .. }

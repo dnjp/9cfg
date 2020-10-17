@@ -49,8 +49,7 @@ case terminal
 	
 	# set keyboard map
 	cat /sys/lib/kbmap/colemak > /dev/kbmap
-
-	rio -s -i /usr/daniel/bin/rc/riostart
+	grio -s -e -c 0xaabbff99 -y 0 -w 2 -i /usr/daniel/bin/rc/riostart
 case cpu
 	bind /mnt/term/dev/cons /dev/cons
 	bind -q /mnt/term/dev/consctl /dev/consctl

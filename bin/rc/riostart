@@ -1,5 +1,6 @@
 #!/bin/rc
+window 0,0,161,117 stats -lmisce
+window -miny 130
 
-# -r minx miny maxx maxy
-window 0,0,683,768 acme
-window 683,0,1024,768
+# run a system shell on the serial console
+~ $#console 0 || window -scroll console

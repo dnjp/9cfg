@@ -1,80 +1,57 @@
-# environment variables
-font=/lib/font/bit/lucidasans/unicode.7.font
-editor=E
+bind -a $home/bin/rc /bin
+bind -a $home/bin/$cputype /bin
+if(! syscall create /tmp/xxx 1 0666 >[2]/dev/null)
+	ramfs	# in case we're running off a cd
 
-# setup executables
-bind -qa $home/bin/rc /bin
-bind -qa $home/bin/$cputype /bin
-
-# bind to git config
-bind $home/lib/profile $home/src/config/lib/profile
-bind $home/lib/git $home/src/config/lib/git
-bind $home/bin/rc $home/src/config/bin/rc
+# fonts
+mkdir -p /lib/font/ttf/goregular
+mkdir -p /lib/font/ttf/lucidagrande
+bind $home/contrib/Go-Regular /lib/font/ttf/goregular
+bind $home/contrib/LucidaGrande /lib/font/ttf/lucidagrande
+font=/lib/font/ttf/lucidagrande/unicode.14.font
 
 # go
-bind -a $home/go/bin /bin
-GO111MODULE=on
+GOROOT=/sys/lib/go/amd64-1.16.3
+touch /amd64/bin/go
+touch /amd64/bin/gofmt
+bind /sys/lib/go/amd64-1.16.3/bin/go /amd64/bin/go
+bind /sys/lib/go/amd64-1.16.3/bin/gofmt /amd64/bin/gofmt
 
-# aliases
 fn '..' { cd .. }
 fn h { cd $home }
 fn l { ls $* }
-fn sdf { ftpfs -a ftp@sdf.org sdf.org }
 fn gp { git/push $* }
 fn gs { git/walk $* }
 fn gc { git/commit $* }
 fn ga { git/add $* }
 
-# authentication
-cat $home/lib/ssh/key >/mnt/factotum/ctl
-ssh git@github.com
-ssh git@git.sr.ht
-
-# start services
-ip/ipconfig
-
-# mount contrib/sources
-9fs 9pio
-9fs 9contrib
-
 switch($service){
 case terminal
-	webcookies
+	if(! webcookies >[2]/dev/null)
+		webcookies -f /tmp/webcookies
 	webfs
 	plumber
 	echo -n accelerated > '#m/mousectl'
 	echo -n 'res 3' > '#m/mousectl'
-	prompt=('; ' '	')
+	prompt=('term% ' '	')
 	fn term%{ $* }
-	
-	# set keyboard map
-	cat /sys/lib/kbmap/colemak > /dev/kbmap
-	grio -s -e -c 0xaabbff99 -y 0 -w 2 -i /usr/daniel/bin/rc/riostart
+	rio -i riostart
 case cpu
 	bind /mnt/term/dev/cons /dev/cons
 	bind -q /mnt/term/dev/consctl /dev/consctl
 	>[2] /dev/null {
 		cp /dev/sysname /mnt/term/dev/label
-		if(wsys=`{cat /mnt/term/env/wsys})
-			wsys=/mnt/term^$wsys
-	} 
-	bind -a /mnt/term/dev /dev
-	prompt=('cpu% ' '	')
-	fn cpu%{ $* }
-	if(! test -e /mnt/term/dev/wsys){
-		# call from drawterm
-		if(test -e /mnt/term/dev/secstore){
-			auth/factotum -n
-			read -m /mnt/term/dev/secstore >/mnt/factotum/ctl
-			echo >/mnt/term/dev/secstore
-		}
-		if not
-			auth/factotum
-		webcookies
-		webfs
-		plumber
-		rio
+		if(test -s /mnt/term/env/wsys)
+			wsys=/mnt/term^`{cat /mnt/term/env/wsys}
 	}
+	webfs
+	plumber
+	echo -n accelerated > '#m/mousectl'
+	echo -n 'res 3' > '#m/mousectl'
+	bind -a /mnt/term/dev /dev
+	prompt=('; ' '	')
+	fn cpu%{ $* }
+	rio -i riostart -s -f $font
 case con
 	prompt=('cpu% ' '	')
 }

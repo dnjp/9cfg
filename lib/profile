@@ -3,6 +3,14 @@ bind -a $home/bin/$cputype /bin
 if(! syscall create /tmp/xxx 1 0666 >[2]/dev/null)
 	ramfs	# in case we're running off a cd
 
+# env
+editor=E
+
+# bind to git config
+bind $home/lib/profile $home/src/9cfg/lib/profile
+bind $home/lib/git $home/src/9cfg/lib/git
+bind $home/bin/rc $home/src/9cfg/bin/rc
+
 # fonts
 mkdir -p /lib/font/ttf/goregular
 mkdir -p /lib/font/ttf/lucidagrande
@@ -16,14 +24,20 @@ touch /amd64/bin/go
 touch /amd64/bin/gofmt
 bind /sys/lib/go/amd64-1.16.3/bin/go /amd64/bin/go
 bind /sys/lib/go/amd64-1.16.3/bin/gofmt /amd64/bin/gofmt
+bind -a $home/go/bin /bin
 
+# git
+cat $home/lib/ssh/key >/mnt/factotum/ctl
+ssh git@github.com
+fn gp { git/push $* }
+fn gs { git/walk $* }
+fn gc { git/commit `{git/walk | grep '^M' | awk '{print $2}'} }
+fn ga { git/add $* }
+
+# convenience
 fn '..' { cd .. }
 fn h { cd $home }
 fn l { ls $* }
-fn gp { git/push $* }
-fn gs { git/walk $* }
-fn gc { git/commit $* }
-fn ga { git/add $* }
 
 switch($service){
 case terminal

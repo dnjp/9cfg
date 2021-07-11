@@ -38,6 +38,7 @@ fn ga { git/add $* }
 fn '..' { cd .. }
 fn h { cd $home }
 fn l { ls $* }
+fn pedit { B $home/lib/profile }
 
 switch($service){
 case terminal
